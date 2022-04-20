@@ -1,0 +1,220 @@
+<div class="sidebar left200px s-inner-sidebar" id="rp_sidebar" style="width: 200px;">
+    <div class="block" style="padding-right: 0;">
+        <h5 class="heading">Filters RP</h5>
+        <form id="rp_filter_form">
+            <ul class="menu-v collapsible custom_rp_ul">
+            <li>
+                <label for="rp_login">Contact Login: <input type="text" name="rp_login" id="rp_login"></label>
+            </li>                   
+            <li>
+                <label for="rp_email">Contact Email: <input type="text" name="rp_email" id="rp_email"></label>
+            </li>                   
+            <li>
+                <label for="rp_name">Registrant Name: <input type="text" name="rp_name" id="rp_name"></label>
+            </li>               
+            <li>
+                <label for="rp_event">Event :
+                    <select class="rp_select" id="rp_event" name="rp_event">
+                        <option value="0">All</option>
+                        {foreach $events as $event}
+                            <option value="{$event.id}">{$event.name_celebraty}</option>
+                        {/foreach}
+                    </select>
+                </label>
+            </li>
+            <li>
+                <label for="rp_status">Status Rp :
+                    <select class="rp_select" id="rp_status" name="rp_status">
+                        <option value="0">All</option>
+                        <option value="1">Active</option>
+                        <option value="2">Delete Owner</option>
+                        <option value="3">Not active</option>
+                    </select>
+                </label>
+            </li>                 
+            </ul>
+            <input type="hidden" name="filtr" id="filtr" value="1" />
+        </form>
+        <input type="button" name="rp_name_find" value="filter" class="button green rp_button" onclick="filter_rp()" />
+    </div>
+</div>
+<div class="content left200px blank" id="s-content" style="padding-left: 10px;">
+    <div class="sidebar left300px bordered-left">
+        <div>
+            <ul class="zebra">
+                {if $data_rp}
+                    {foreach $data_rp as $rp} 
+                        <li class="rp_open {if $rp.register_id eq $main_rp.register_id} rp_selected{/if}" data_rp = "{$rp.register_id}" onclick="selectRp({$rp.register_id})">
+                            <div class="profile image50px">
+                                <div class="image">
+                                    <img src="//www.gravatar.com/avatar/45a52e12f73c77cd8a72ceaa26a653cf?size=50&amp;default=http%3A%2F%2Falexmarshallstudios.test-easy-it.ru%2Fwa-content%2Fimg%2Fuserpic50.jpg" class="userpic">
+                                </div>
+                                <div class="details nowrap">
+                                    {if $rp.status eq 1}
+                                        <i class="icon16 ss new"></i>
+                                        <span style="color:#009900;font-weight:bold;font-style:italic;">{$rp.register_id} - {$rp.name_register}</span>
+                                    {elseif $rp.status eq 2}
+                                        <i class="icon16 ss trash"></i>
+                                        <span style="color:red;font-weight:bold;font-style:italic;">{$rp.register_id} - {$rp.name_register}</span>
+                                    {else}
+                                        <i class="icon16 ss flag-yellow"></i>
+                                        <span style="color:#FF9900;font-weight:bold;font-style:italic;">{$rp.register_id} - {$rp.name_register}</span>
+                                    {/if}
+                                    <p>
+                                        <span class="small black">{$rp.contact.name}</span><br>
+                                        <span class="hint">{$rp.register_date_created}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    {/foreach}
+                {else}
+                    <li><p>Not Found RP</p></li>
+                {/if}
+            </ul>
+        </div>
+    </div>
+    <div class="content left300px" id="rp_content">
+        {if $main_rp}
+            <div class="s-split-order-wrapper block double-padded">
+                <h1>#{$main_rp.register_id} - {$main_rp.name_register}
+                    <span class="small" style="font-size: 16px; margin-left: 10px; position: relative; top: -2px; font-weight:bold;">
+                        {if $main_rp.status eq 1}
+                            <i class="icon16 ss new" style="margin-top: 9px;"></i>
+                            <span style="margin-right: 10px; color:#009900;">Active</span>
+                        {elseif $main_rp.status eq 2}
+                            <i class="icon16 ss trash" style="margin-top: 9px;"></i>
+                            <span style="margin-right: 10px; color:red;">Delete Owner</span>
+                        {else}
+                            <i class="icon16 ss flag-checkers" style="margin-top: 9px;"></i>
+                            <span style="margin-right: 10px;color:#7f7f13;">Not Active</span>
+                        {/if}
+                        <em class="hint nowrap">{$main_rp.register_date_created}</em>
+                    </span>
+                </h1>
+                <div class="block not-padded s-order-readable">
+                    <ul class="menu-h">
+                        {if $main_rp.status neq 2}
+                            <li><button class="button green" onclick="rp_not_active({$main_rp.register_id}, 1);">Active</button></li>
+                            <li><button class="button yellow" onclick="rp_not_active({$main_rp.register_id}, 3);">Not Active</button></li>
+                        {/if}
+                            <li><button class="button red" onclick="rp_delete({$main_rp.register_id});">Delete FORCE</button></li>
+                    </ul>
+                </div>
+                <div class="profile image50px">
+                    <div class="image">
+                        <a href="?action=customers#/id/{$main_rp.register_id}">
+                            <img src="//www.gravatar.com/avatar/16013fc93f043d8a5645c5270462392f?size=50&amp;default=http%3A%2F%2Falexmarshallstudios.test-easy-it.ru%2Fwa-content%2Fimg%2Fuserpic50.jpg" class="userpic">
+                        </a>
+                    </div>
+                    <div class="details">
+                        <h3>
+                            <a href="?action=customers#/id/{$main_rp.customer_id}">{$main_rp.contact.name}</a>
+                        </h3>
+                        <ul class="menu-v with-icons compact">
+                            <li>
+                                <i class="icon16 email"></i>
+                                <a class="inline" href="mailto:{$main_rp.email}">{$main_rp.email}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="rp_main_info div_form div_form__nomarg">
+                        <h2>Registry Info</h2>
+                        <p class="rp_main_info__p">Register Name - <span>{$main_rp.name_register}</span></p>
+                        <p class="rp_main_info__p">Event - <span>{$main_rp.events.name_celebraty}</span></p>
+                        <p class="rp_main_info__p">Date - <span>{$main_rp.datetime}</span></p>
+                        <p class="rp_main_info__p">Co Regsitrant - <span>{if $main_rp.enable_co}Yes{else}NO{/if}</span></p>
+                    </div>
+                    <div class="rp_registrant" style="overflow: hidden;">
+                        <div class="rp_shipping div_form div_form__small">
+                            <h2 class="rp_open_details">Registrant Details <i class="icon16 ss paid"></i></h2>
+                            <div style="display:none;">      
+                                <p class="rp_main_info__p">First Name - <span>{$main_rp.registrants.registrant.firstname_regsitrant}</span></p> 
+                                <p class="rp_main_info__p">Last Name - <span>{$main_rp.registrants.registrant.lastname_regsitrant}</span></p>
+                                <p class="rp_main_info__p">Address - <span>{$main_rp.registrants.registrant.address_registrant}</span></p>
+                                <p class="rp_main_info__p">City - <span>{$main_rp.registrants.registrant.city_registrant}</span></p>
+                                <p class="rp_main_info__p">State - <span>{$main_rp.registrants.registrant.state}</span></p>
+                                <p class="rp_main_info__p">Country - <span>USA</span></p>
+                                <p class="rp_main_info__p">Phone - <span>{$main_rp.registrants.registrant.phone_registrant}</span></p>
+                                <p class="rp_main_info__p">ZIP - <span>{$main_rp.registrants.registrant.zip_registrant}</span></p>
+                            </div>
+                        </div>
+                        {if $main_rp.enable_co}
+                            <div class="rp_shipping div_form div_form__small">
+                                <h2  class="rp_open_details">CO Registrant Details <i class="icon16 ss paid"></i></h2>
+                                <div style="display:none;">  
+                                    <p class="rp_main_info__p">First Name - <span>{$main_rp.registrants.registrant_co.firstname_regsitrant}</span></p> 
+                                    <p class="rp_main_info__p">Last Name - <span>{$main_rp.registrants.registrant_co.lastname_regsitrant}</span></p>
+                                    <p class="rp_main_info__p">Address - <span>{$main_rp.registrants.registrant_co.address_registrant}</span></p>
+                                    <p class="rp_main_info__p">City - <span>{$main_rp.registrants.registrant_co.city_registrant}</span></p>
+                                    <p class="rp_main_info__p">State - <span>{$main_rp.registrants.registrant_co.state}</span></p>
+                                    <p class="rp_main_info__p">Country - <span>USA</span></p>
+                                    <p class="rp_main_info__p">Phone - <span>{$main_rp.registrants.registrant_co.phone_registrant}</span></p>
+                                    <p class="rp_main_info__p">ZIP - <span>{$main_rp.registrants.registrant_co.zip_registrant}</span></p>
+                                </div>
+                            </div>
+                        {/if}
+                        <div class="rp_shipping div_form div_form__small">
+                                <h2  class="rp_open_details">Shipping Details <i class="icon16 ss paid"></i></h2>
+                                <div style="display:none;">
+                                    <p class="rp_main_info__p">First Name - <span>{$main_rp.registrants.shipping.firstname_regsitrant}</span></p> 
+                                    <p class="rp_main_info__p">Last Name - <span>{$main_rp.registrants.shipping.lastname_regsitrant}</span></p>
+                                    <p class="rp_main_info__p">Address - <span>{$main_rp.registrants.shipping.address_registrant}</span></p>
+                                    <p class="rp_main_info__p">City - <span>{$main_rp.registrants.shipping.city_registrant}</span></p>
+                                    <p class="rp_main_info__p">State - <span>{$main_rp.registrants.shipping.state}</span></p>
+                                    <p class="rp_main_info__p">Country - <span>USA</span></p>
+                                    <p class="rp_main_info__p">Phone - <span>{$main_rp.registrants.shipping.phone_registrant}</span></p>
+                                    <p class="rp_main_info__p">ZIP - <span>{$main_rp.registrants.shipping.zip_registrant}</span></p>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- <div class="rp_clear"></div> -->
+                    <div class="rp_goods">
+                        {if $main_rp.products}
+                        <h2>Registry Goods</h2>
+                        <table class="light s-order-readable rp_goods_table">
+                            <tr>
+                                <th class="align_right">Photo</th>
+                                <th class="align_right">Name</th>
+                                <th class="align_right">Price</th>
+                                <th class="align_right">Availability</th>
+                                <th class="align_right">Quantity</th>
+                                <th class="align_right">Quantity Buy</th>
+                                <th class="align_right">Status</th>
+                            </tr>
+                            {foreach $main_rp.products as $product}
+                                <tr>
+                                    <td>
+                                        {if !empty($product.prd_imageid)}
+                                            {$wa->shop->productImgHtml(['id' => $product.product_id, 'image_id' => $product.prd_imageid, 'image_filename' => $product.prd_imagefilename, 'ext' => $product.prd_ext], '48x48')}
+                                        {else}
+                                            <img src="{$wa_app_static_url}img/image-dummy-small.png" class="not-found" style="width: 48px; height: 48px;">
+                                        {/if}
+                                    </td>
+                                    <td>
+                                        <a href="?action=products#/product/192/">{$product.prdname} ({$product.skuname})</a><br/>
+                                        {if $product.sku}<span class="hint">{$product.sku}</span>{/if}
+                                    </td>
+                                    <td>{shop_currency($product.skuprice, $product.prdcurr)}</td>
+                                    {if $product.skucount neq null}
+                                    <td>{if $product.skucount > 0}<span style="color:#009900;">In stock</span>{else}<span style="color:red;">Not available</span>{/if}</td>
+                                    {else}
+                                    <td><span style="color:#009900;">In stock</span></td>
+                                    {/if}
+                                    <td>{$product.count}</td>
+                                    <td>{$product.count_buy}</td>
+                                    <td>{if $product.status_product eq 1}<span style="color:#099000">Active{else}<span style="color:#f9bb02">Delete User{/if}</span></td>
+                                </tr>
+                            {/foreach}
+                        </table>
+                        {else}
+                            <p style="color:red;">Not products in this RP</p>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        {else}
+            <p>Not Found</p>
+        {/if}
+    </div>
+</div>

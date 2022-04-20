@@ -1,0 +1,59 @@
+<div>
+	<div class="findform div_form" style="width: 300px;">
+		<form action="" method="post" id="registryfind_form">
+			<h3>Please enter the first and last name of one of the registrants below and click "Find a Registry"</h3>
+			<span class="warning_registry" style="color:red;"></span>
+			<div class="inputfind"><span>Firstname*:</span><input type="text" name="firstname" id="firstname" value=""/></div>
+			<div class="inputfind"><span>Lastname*:</span><input type="text" name="lastname" id="lastname"  value=""/></div>
+			<div class="inputfind">
+				<span>State <span style="color:#7d7d7d;">(optional):</span></span>
+				<select name="place" id="">
+					<option value="0">State</option>
+					{foreach $states as $state}
+						<option value="{$state.code}">{$state.name}</option>
+					{/foreach}
+				</select>
+			</div>
+			<div class="inputfind">
+				<span>Month <span style="color:#7d7d7d;">(optional):</span></span>
+				<select name="mouth" id="">
+					<option value="0">Month</option>
+					<option value="1">January</option>
+					<option value="2">February</option>
+					<option value="3">March</option>
+					<option value="4">April</option>
+					<option value="5">May</option>
+					<option value="6">June</option>
+					<option value="7">July</option>
+					<option value="8">August</option>
+					<option value="9">September</option>
+					<option value="10">October</option>
+					<option value="11">November</option>
+					<option value="12">December</option>
+				</select>
+			</div>
+			<div class="inputfind">
+				<span>Year <span style="color:#7d7d7d;">(optional):</span></span>
+				<select name="year" id="">
+					<option value="0">Year</option>
+					<option value="2017">2017</option>
+					<option value="2018">2018</option>
+					<option value="2019">2019</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>			
+					<option value="2024">2024</option>			
+					<option value="2025">2025</option>			
+					<option value="2026">2026</option>			
+					<option value="2027">2027</option>			
+				</select>
+			</div>
+			<input type="hidden" name="ajax" value="1" />
+		</form>
+		<button class="button rigistry_link" onclick="registryfind_function()">Find Registry</button>
+	</div>
+	<div id="registry_result" class="registry_result">
+		
+	</div>
+</div>

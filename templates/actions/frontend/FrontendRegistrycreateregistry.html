@@ -1,0 +1,167 @@
+{if $big_count}
+	<div>
+		<p><a href="/registrymanage/" style="color:red;font-size:16px;">You have reached your limit of 5 registries. Please delete one of your registries.</a></p>
+	</div>
+{else}
+<div>
+	<h2>{if $change}Change{else}Create{/if} my Registry</h2>
+	<p class="warning_registry">Your registry may contain up to 20 unique items and you may have up to 5 registries at 1 time. Only 1 registry is active at a time. You can edit any of your registries on the <a href="/registrymanage" id="gotomanager">Manage my Registry</a> page.</p>
+	<form action id="create_registry_form">
+	<input type="hidden" name="user_id" value="{$user_id}"/>
+	<input type="hidden" name="change" value="{if $change}{$change}{else}0{/if}"/>
+	<div class="reg_event block">
+		<h3>Event Details</h3>
+		<div class="div_form">
+			<div class="registry_field">
+				<label for="reg_event_name">Registry Name <span class="warning_registry">*</span><input type="text" name="reg_event_name" id="reg_event_name" value="{$regdata.0.name_register}" /></label>
+				<span class="reg_name_error"></span>
+				<span class="info_registry">(e.g Our wedding )</span>
+			</div>
+			<div class="registry_field">	
+				<label for="reg_event_type">Event Type <span class="warning_registry">*</span>
+					<select name="reg_event_type" id="reg_event_type">
+						<option value="0">Select Event</option>
+						{foreach $events as $event}
+							<option value="{$event.id}" {if $event.id eq $regdata.0.type_celebraty} selected {/if}>{$event.name_celebraty}</option>
+						{/foreach}
+					</select>
+				</label>
+			</div>
+			<div class="registry_field">
+				<label>Event Date <span class="warning_registry">*</span></label><br/>
+				<span>Month:</span>
+				<select name="date_mounth" id="date_mounth"  class="date-select"  autocomplete="off">
+					{foreach $months as $key=>$month}
+						<option value="{$key}" {if $key eq $curr_month } selected="selected" {/if}>{$month}</option>
+					{/foreach}
+				</select>
+				<span>Day:</span>
+				<select name="date_day" id="date_day" class="date-select" autocomplete="off">
+					<option value="0">Day</option>
+					{foreach $days as $day}
+						<option value="{$day}" {if $day eq $curr_day } selected="selected" {/if}>{$day}</option>	
+					{/foreach}
+				</select>
+				<span>Year:</span>
+				<select name="date_year" id="date_year"  class="date-select"  autocomplete="off">
+					<option value="0">Year</option>
+					{foreach $years as $key=>$year}
+						<option value="{$key}" {if $key eq $curr_year } selected="selected" {/if}>{$year}</option>
+					{/foreach}			
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="block overflow_hidden">
+		<div class="reg_registrant register_inline">
+			<h3>Registrant Details</h3>
+			<div class="div_form">
+				<div class="registry_field">
+					<label for="reg_user_firstname">First Name <span class="warning_registry">*</span><input type="text" name="reg_user_firstname" id="reg_user_firstname" value="{$regdata.0.firstname_regsitrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_lastname">Last Name <span class="warning_registry">*</span><input type="text" name="reg_user_lastname" id="reg_user_lastname" value="{$regdata.0.lastname_regsitrant}" /></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_address">Address <span class="warning_registry">*</span><input type="text" name="reg_user_address" id="reg_user_address" value="{$regdata.0.address_registrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_city">City <span class="warning_registry">*</span><input type="text" name="reg_user_city" id="reg_user_city" value="{$regdata.0.city_registrant}" /></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_state">State <span class="warning_registry">*</span>
+						<select name="reg_user_state" id="reg_user_state">
+							<option value="0">State</option>
+							{foreach $states as $state}
+								<option value="{$state.code}" {if $state.code eq $regdata.0.state} selected {/if}>{$state.name}</option>
+							{/foreach}
+						</select>
+					</label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_zip">Zip Code <span class="warning_registry">*</span><input type="text" name="reg_user_zip" id="reg_user_zip" value="{$regdata.0.zip_registrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_phone">Daytime Phone <span class="warning_registry">*</span><input type="text" name="reg_user_phone" id="reg_user_phone" placeholder="(for delivery question only)" value="{$regdata.0.phone_registrant}"/></label>
+				</div>
+			</div>
+		</div>
+		<div class="reg_registrant_co register_inline">
+			<h3><input type="checkbox" name="enable_registrant_co" id="enable_registrant_co" {if $regdata.0.enable_co eq 1} checked="checked" {/if}>Co-Registrant Details</h3>
+			<div class="div_form" id="form_registrant_co" {if  $regdata.0.enable_co neq 1} style="display: none;" {/if}>
+				<div class="registry_field">
+					<label for="reg_user_firstname_co">First Name <span class="warning_registry">*</span><input type="text" name="reg_user_firstname_co" id="reg_user_firstname_co" value="{$regdata.1.firstname_regsitrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_lastname_co">Last Name <span class="warning_registry">*</span><input type="text" name="reg_user_lastname_co" id="reg_user_lastname_co" value="{$regdata.1.lastname_regsitrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_address_co">Address <span class="warning_registry">*</span><input type="text" name="reg_user_address_co" id="reg_user_address_co" value="{$regdata.1.address_registrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_city_co">City <span class="warning_registry">*</span><input type="text" name="reg_user_city_co" id="reg_user_city_co" value="{$regdata.1.city_registrant}" /></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_state_co">State <span class="warning_registry">*</span>
+						<select name="reg_user_state_co" id="reg_user_state_co">
+							<option value="0">State</option>
+							{foreach $states as $state}
+								<option value="{$state.code}" {if $state.code eq $regdata.1.state} selected {/if}>{$state.name}</option>
+							{/foreach}
+						</select>
+					</label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_zip_co">Zip Code <span class="warning_registry">*</span><input type="text" name="reg_user_zip_co" id="reg_user_zip_co" value="{$regdata.1.zip_registrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_phone_co">Daytime Phone <span class="warning_registry">*</span><input type="text" name="reg_user_phone_co" id="reg_user_phone_co" placeholder="(for delivery question only)" value="{$regdata.1.phone_registrant}"/></label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="reg_shipping">
+		<div class="block">
+			<h3>Shipping Info</h3>
+			<input type="radio" name="before_event" class="input_shipping" value="1" {if $regdata.0.shipping_registrant eq 1 || $regdata.0.shipping_registrant eq null} checked {/if}<span>Send to Registrant</span><br/>
+			<input type="radio" name="before_event" class="input_shipping" value="2" {if $regdata.0.shipping_registrant eq 2} checked{/if}> <span>Send to Co_Registrant</span><br/>
+			<input type="radio" name="before_event" class="input_shipping" value="3" {if $regdata.0.shipping_registrant eq 3} checked{/if}> <span>Send to Other</span><br/>
+			<div class="div_form" id="form_shipping"  {if $regdata.0.shipping_registrant neq 3 } style="display: none;" {/if}>
+				<p>Please tell us where to send your gifts. Currently, we can only ship within the United States.</p>
+				<h4>Shipping Details</h4>
+				<div class="registry_field">
+					<label for="reg_user_firstname_before">First Name <span class="warning_registry">*</span><input type="text" name="reg_user_firstname_before" id="reg_user_firstname_before" value="{$regdata.2.firstname_regsitrant}" /></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_lastname_before">Last Name <span class="warning_registry">*</span><input type="text" name="reg_user_lastname_before" id="reg_user_lastname_before" value="{$regdata.2.lastname_regsitrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_address_before">Address <span class="warning_registry">*</span><input type="text" name="reg_user_address_before" id="reg_user_address_before" value="{$regdata.2.address_registrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_city_before">City <span class="warning_registry">*</span><input type="text" name="reg_user_city_before" id="reg_user_city_before" value="{$regdata.2.city_registrant}"/></label>
+				</div>
+				<div class="registry_field">	
+					<label for="reg_user_state_before">State <span class="warning_registry">*</span>
+						<select name="reg_user_state_before" id="reg_user_state_before">
+							<option value="0">State</option>
+							{foreach $states as $state}
+								<option value="{$state.code}" {if $state.code eq $regdata.2.state} selected {/if}>{$state.name}</option>
+							{/foreach}
+						</select>
+					</label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_zip_before">Zip Code <span class="warning_registry">*</span><input type="text" name="reg_user_zip_before" id="reg_user_zip_before" value="{$regdata.2.zip_registrant}"/></label>
+				</div>
+				<div class="registry_field">
+					<label for="reg_user_phone_before">Daytime Phone <span class="warning_registry">*</span><input type="text" name="reg_user_phone_before" id="reg_user_phone_before" placeholder="(for delivery question only)" value="{$regdata.2.phone_registrant}"/></label>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	<p class="error"></p>
+	<button onclick="createregistry()" class="rigistry_link">Save</button>
+</div>
+{/if}

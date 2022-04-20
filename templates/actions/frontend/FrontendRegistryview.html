@@ -1,0 +1,91 @@
+{if $myregistry}
+<div class="links_change_email">
+	<a href="/registrycreateregistry/{$registerid}/">Edit registry details</a>
+	<a href="mailto:?subject=A link to your registry with Alex Marshall Studios&body=http://{$smarty.server.SERVER_NAME}/registryview/{$registerid}/">Email my registry</a>
+</div>
+{/if}
+<div class="div_form" style="width: 98%;">
+	{if $isempty}
+		{if $myregistry}<p><a href="/" class="rigistry_link">Click here to add items to this registry</a></p>{/if}
+	{else}
+		<h1>{$registrant_names} - {$reg_datetime|wa_date:'humandate'}</h1>
+		{if !$myregistry}
+			<table border="1" class="table_view" border=1>
+				<thead>
+					<tr>
+						<td></td>
+						<td>Name</td>
+						<td>Availability</td>
+						<td>Price</td>
+						<td>Purchased</td>
+						<td>Still Needs</td>
+						<td></td>
+					</tr>
+				</thead>
+				{foreach $products as $prd}
+					<tr>
+						<td>{$wa->shop->productImgHtml($prd, '200', [ 'itemprop' => 'image', 'id' => 'product-image', 'alt' => $prd.name|escape ])}</td>
+						<td><a href="/{$prd.url}/" class="rigistry_link">{$prd.name} ({$prd.sku_name})</a></td>
+						<td>{$prd.status}</td>
+						<td>{shop_currency($prd.price, $prd.currency)}</td>
+						<td>{$prd.count_buy}</td>
+						<td>{$prd.count_true}</td>
+						<td>
+						{if $prd.count_true neq 0}
+							<form class="addtocart" method="post" action="/cart/add/" style="display: inline-block;" />
+								<input type="hidden" name="product_id" value="{$prd.id}">
+								<input type="hidden" name="sku_id" class = "sku_id" value="{$prd.sku_id}" />
+								<input type="text" name="quantity" value = "1"/ style="width:30px;" />
+								<input type="hidden" name="registr" value ="{$prd.register_id}" class="registr" />
+							</form>
+							<input type="button" value="Add to Cart" data_cnt="{$prd.count_true}" class="buy_registry_product rigistry_link" />
+						{else}
+							<span>Complete</span>
+						{/if}
+					</td>
+					</tr>
+				{/foreach}
+			</table>
+		{else}
+		<table border="1" class="table_view"  border=1>
+			<thead>
+				<tr>
+					<td></td>
+					<td>Name</td>
+					<td>Availability</td>
+					<td>Price</td>
+					<td>Purchased</td>
+					<td>Still Needs</td>
+					<td></td>
+					<td></td>
+				</tr>
+			</thead>
+			{foreach $products as $prd}
+				<tr>
+					<td>{$wa->shop->productImgHtml($prd, '200', [ 'itemprop' => 'image', 'id' => 'product-image', 'alt' => $prds.name|escape ])}</td>
+					<td><a href="/{$prd.url}/" class="rigistry_link">{$prd.name} ({$prd.sku_name})</a></td>
+					<td>{$prd.status}</td>
+					<td>{shop_currency($prd.price, $prd.currency)}</td>
+					<td>{$prd.count_buy}</td>
+					<td><input type="text" name="count_true" value="{$prd.count_true}"><button class="registry_product_cange rigistry_link" data_sku="{$prd.sku_id}" data_reg="{$prd.register_id}">Update</button></td>
+					<td>
+						{if $prd.count_true neq 0}
+							<form class="addtocart" method="post" action="/cart/add/" style="display: inline-block;" />
+								<input type="hidden" name="product_id" value="{$prd.id}">
+								<input type="hidden" name="sku_id" class = "sku_id" value="{$prd.sku_id}" />
+								<input type="text" name="quantity" value = "1"/ style="width:30px;" />
+								<input type="hidden" name="registr" value ="{$prd.register_id}" class="registr" />
+							</form>
+							<input type="button" value="Add to Cart" data_cnt="{$prd.count_true}" class="buy_registry_product rigistry_link" />
+						{else}
+							<span>Complete</span>
+						{/if}
+					</td>
+					<td><button class="del_registry_product rigistry_link" >Delete</button></td>
+				</tr>
+			{/foreach}
+		</table>
+		{/if}
+		<p class="error"></p>
+	{/if}
+</div>

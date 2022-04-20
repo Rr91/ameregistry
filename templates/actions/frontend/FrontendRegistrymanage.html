@@ -1,0 +1,20 @@
+<div>
+	<div class="overflow_hidden">
+	<p>You can save up to 5 registries, but only 1 registry can be active at a time. You can activate or deactivate your registry below.</p>
+	{if $registrys|@count == 0}
+		<p>You do not have active registries. Create a new registry</p>
+	{/if}
+	{foreach $registrys as $reg}
+		<div class="block div_form div_form__regmanage register_inline reg_registrant register_action">	
+			<h2 style="overflow:hidden;"><a href="/registryview/{$reg.register_id}" class="rigistry_link manage_name_rp">{$reg.name_register}</a> <button  class="reg_registrant rigistry_link view_registry disp_none"  onclick="location.href = '/registryview/{$reg.register_id}'">View items</button></h2>
+			<p class="text_bold"><span class="text_bold_none">Registrant Name: </span>{$reg.firstname_regsitrant} {$reg.lastname_regsitrant}</p>
+			<p class="text_bold"><span class="text_bold_none">Event Type and Date:</span> {$reg.name_celebraty} on {$reg.datetime|date_format}</p>
+			<p class="text_bold"><span class="text_bold_none">Registry Status:</span> {if $reg.status eq 1} Active <button class="reg_registrant rp_status_c rigistry_link" style ="float:right;" data_status="3">Deactivate this Registry</button>{elseif $reg.status eq 3} Inactive  <button class="reg_registrant rp_status_c rigistry_link" style ="float:right;" data_status="1">Activate this Registry</button>{/if}</p>
+			<input type="hidden" name="registr" class = "registr" value="{$reg.register_id}">
+			<p class="error"></p>
+			<div style="overflow:hidden;"><button class="reg_registrant rigistry_link change_registry" onclick="location.href = '/registrycreateregistry/{$reg.register_id}'" style="float:left;">Edit this Registry</button><button  class="reg_registrant rigistry_link del_registry" style="float:right;">Delete this registry</button></div>
+		</div>
+	{/foreach}
+	</div>
+	<button class="rigistry_link" onclick="location.href = '/registrycreate'">Create new Registry</button>
+</div>

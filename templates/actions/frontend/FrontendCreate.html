@@ -1,0 +1,39 @@
+<div class="registry_main">
+	<h1>Create a registry</h1>
+	<p>Sign in with your Alex Marshall Studios account to create a Registry. If you do not already have an account, please create one.</p>
+	<p id="registry_result" style="color:red;"></p>
+	<div class="registry_wrapper">
+		<div style="width:45%;">
+			<h2>Yes, I have an account</h2>
+			<hr>
+			<p>To sign in to your account, please enter your email address and password.</p>
+			<form method="post" action="/registrylogin/" id="registrylogin">
+				<input type="hidden" name="wa_auth_login"  class="registry_fullinput" value="1" />
+				<input type="hidden" name="pid" value="{$product_id}" />
+				<span>Email</span>
+				<input type="email" class="registry_fullinput" name="login" value="" />
+				<span>Password</span>	
+				<input type="password" class="registry_fullinput" name="password" value="" />
+				<!-- <input type="submit" name="send" value="Sign-In" /> -->
+			</form>
+			<button onclick="registrylogin();" class="rigistry_link">Sign In</button>
+			<p>Forgot your password? <a href="/forgotpassword">Click Here</a></p>
+		</div>
+		<div class="border"></div>
+		<div style="width:45%;">
+			<h2>No, I don`t have an account</h2>
+			<hr>
+			<p>To create an account, please click “Create an Account” below</p>
+			<a class="reg_button " href="/signup">Create an Account</a>
+			{literal}
+				<script>
+					$(document).ready(function (){
+						$(".rigistry_link").on("click", function(){
+							console.log(5);
+						});
+					});
+				</script>
+			{/literal}
+		</div>
+	</div>
+</div>
